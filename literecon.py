@@ -144,7 +144,7 @@ def reverse_ip_domains(ip):
     # Note: This function uses an external API and may have rate limits.
     # Use responsibly and consider alternative methods if necessary.
     try:
-        response = requests.get(f"https://api.hackertarget.com/reverseiplookup/?q={ip}", timeout=10)
+        response = requests.get(f"https://api.hackertarget.com/reverseiplookup/?q={ip}", timeout=10, verify=True)
         if response.status_code == 200:
             domains = response.text.strip().splitlines()
             if "error" in domains[0].lower():
@@ -163,7 +163,7 @@ def get_geolocation(ip):
     Get geolocation data for an IP address.
     """
     try:
-        response = requests.get(f"https://ipinfo.io/{ip}/json", timeout=10)
+        response = requests.get(f"https://ipinfo.io/{ip}/json", timeout=10, verify=True)
         if response.status_code == 200:
             geo_info = response.json()
             return geo_info
@@ -217,7 +217,7 @@ def robust_request(url, headers, retries=3):
     """
     for attempt in range(retries):
         try:
-            response = requests.get(url, headers=headers, timeout=10)
+            response = requests.get(url, headers=headers, timeout=10, verify=True)
             return response
         except requests.exceptions.RequestException as e:
             if attempt == retries - 1:
